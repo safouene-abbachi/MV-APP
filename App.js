@@ -1,10 +1,8 @@
-import "react-native-gesture-handler";
 import * as React from "react";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import Home from "./components/Home";
-import Details from "./components/Details";
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import BottomTab from "./components/BottomTab";
+import { ContextProvider } from "./Context";
 
 const MyTheme = {
   dark: true,
@@ -17,23 +15,13 @@ const MyTheme = {
     notification: "rgb(255, 69, 58)",
   },
 };
-const Stack = createStackNavigator();
+
 export default function App() {
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Details" component={Details} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ContextProvider>
+      <NavigationContainer theme={MyTheme}>
+        <BottomTab />
+      </NavigationContainer>
+    </ContextProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#223343",
-    paddingTop: 70,
-    paddingHorizontal: 20,
-  },
-});

@@ -7,11 +7,12 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Button,
 } from "react-native";
+import FavIcon from "./FavIcon";
 
-const Item = ({ item, onPress, backgroundColor, textColor, poster, title }) => (
+const Item = ({ item, onPress, backgroundColor, poster, title }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <FavIcon item={item} />
     <Image
       style={styles.tinyLogo}
       source={{
@@ -29,7 +30,6 @@ const Genres = ({ data, navigation }) => {
   const [selectedId, setSelectedId] = useState(null);
 
   const renderItem = ({ item }) => {
-    console.log({ item });
     const color = item.id === selectedId ? "white" : "black";
     const screenNavigate = () => {
       setSelectedId(item.id);

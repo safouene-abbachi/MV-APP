@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Text,
-  View,
-  ImageBackground,
-  StyleSheet,
-  Image,
-  id,
-} from "react-native";
+import { Text, View, ImageBackground, StyleSheet, Image } from "react-native";
+import Rating from "./Rating";
 
 export default function Details({ route }) {
   const {
@@ -18,10 +12,11 @@ export default function Details({ route }) {
     director,
     cast,
     overview,
+    imdb_rating,
   } = route.params;
   const image = { uri: backdrop };
   const year = new Date(released_on).getFullYear();
-  console.log(backdrop);
+
   return (
     <View style={styles.container}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
@@ -33,9 +28,16 @@ export default function Details({ route }) {
             }}
           />
 
-          <View>
+          <View
+            style={{
+              top: 250,
+              paddingLeft: 10,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
             <Text style={styles.text}>{title}</Text>
-            <Text style={styles.text}>RATING</Text>
+            <Rating rate={imdb_rating} />
           </View>
         </View>
       </ImageBackground>
@@ -48,9 +50,9 @@ export default function Details({ route }) {
       </View>
       <View style={styles.cast}>
         <Text style={styles.desc}>CAST :</Text>
-        {cast.map((actor, i) => {
+        {cast.map((actor) => {
           return (
-            <Text key={i} style={styles.desc}>
+            <Text key={actor} style={styles.desc}>
               {actor},
             </Text>
           );
@@ -58,7 +60,7 @@ export default function Details({ route }) {
       </View>
 
       <Text style={styles.title}>MOVIE DESCRIPTION</Text>
-      <Text style={{ color: "white", bottom: -120, textAlign: "center" }}>
+      <Text style={{ color: "white", bottom: -70, textAlign: "center" }}>
         {overview}
       </Text>
     </View>
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: "center",
-    flex: 0.5,
+    flex: 0.6,
 
     borderWidth: 5,
     borderTopLeftRadius: 20,
@@ -80,23 +82,22 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 21,
-    lineHeight: 84,
-
     fontWeight: "bold",
-    textAlign: "right",
     paddingLeft: 10,
-    top: 200,
-
+    textAlign: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
     color: "#FFF",
     marginLeft: "auto",
     marginRight: "auto",
+    width: 200,
   },
   title: {
     fontSize: 21,
     textDecorationLine: "underline",
     fontWeight: "bold",
 
-    bottom: -100,
+    bottom: -50,
 
     color: "#FFF",
     marginLeft: "auto",
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   tinyLogo: {
     width: 150,
     height: 220,
-    top: 200,
+    top: 150,
     borderRadius: 5,
     marginLeft: 10,
   },
@@ -128,13 +129,13 @@ const styles = StyleSheet.create({
     top: 31,
   },
   details: {
-    top: 210,
+    top: 150,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
   },
   cast: {
-    bottom: -100,
+    bottom: -40,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",

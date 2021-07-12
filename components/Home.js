@@ -1,76 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useContext } from "react";
+import { getMovies } from "../api";
+import Genres from "./Genres";
 import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   ScrollView,
-  Button,
+  RefreshControl,
 } from "react-native";
+import { Context } from "../Context";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+const Home = ({ navigation }) => {
+  const [refreshing, setRefreshing] = useState(false);
+  // Getting the state from te context provider
+  const { gallery, setGallery } = useContext(Context);
 
-import { getMovies, searchMovieByTerm, genres } from "../api";
-import Genres from "./Genres";
-
-export default function Home({ navigation }) {
-  const [state, setState] = useState({
-    search: "",
-    gallery: [],
-  });
-
-  //Fetching Movies
-  useEffect(() => {
-    (async () => {
-      try {
-        const movies = await getMovies();
-
-        setState({ gallery: movies });
-      } catch (error) {
-        console.log(error);
-      }
-    })();
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+    const movies = await getMovies();
+    setGallery(movies);
   }, []);
-  //Searching movie by Term
-
-  const searchMovie = async () => {
-    try {
-      const filtredMoviesByTerm = await searchMovieByTerm(state.search);
-      setState({ gallery: filtredMoviesByTerm });
-      console.log("success");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>WOOKIE MOVIES</Text>
       <View style={styles.searchcontainer}>
-        <TextInput
-          value={state.search}
-          placeholder="Enter Movie..."
-          style={styles.searchbox}
-          onChangeText={(text) => setState({ search: text })}
-        />
-        <Button title="Search" onPress={() => searchMovie()} />
-        <ScrollView vertical={true}>
-          {console.log("YAS", state.gallery && Object.entries(state.gallery))}
-          {state.gallery &&
-            Object.entries(state.gallery).map((gr, i) => {
+        <ScrollView
+          vertical={true}
+          contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {gallery &&
+            Object.entries(gallery).map((gr, i) => {
+              const movieGenre = gr[0];
+              const movie = gr[1];
               return (
-                <View key={i} style={styles.container}>
+                //Passing the movie genre in the key attribute and not the index (as discussed in the interview)
+                <View key={movieGenre} style={styles.container}>
                   <Text style={styles.title}>
-                    {gr[1].length !== 0 ? gr[0] : ""}
+                    {movie.length !== 0 ? movieGenre : ""}
                   </Text>
-                  <Genres navigation={navigation} data={gr[1]} />
+                  <Genres navigation={navigation} data={movie} />
                 </View>
               );
             })}
-          <View style={{ height: 400 }} />
+          <View style={{ height: 300 }} />
         </ScrollView>
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   title: {
@@ -79,6 +63,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     marginBottom: 20,
+    paddingTop: 30,
   },
   searchbox: {
     fontSize: 20,
@@ -90,3 +75,5 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
 });
+
+export default Home;
