@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../Context";
 import uuid from "react-native-uuid";
+
 import {
   View,
   StyleSheet,
@@ -9,11 +10,7 @@ import {
   Text,
   Button,
 } from "react-native";
-const Genres = [
-  { label: "ACTION", value: "ACTION" },
-  { label: "ADVENTURE", value: "ADVENTURE" },
-  { label: "DRAMA", value: "DRAMA" },
-];
+
 export default function AddMovie({ navigation }) {
   const { setGallery, gallery } = useContext(Context);
   const [state, setState] = useState({
@@ -22,25 +19,30 @@ export default function AddMovie({ navigation }) {
     backdrop: "",
     imdb_rating: null,
     released_on: "",
+    actors: "",
     cast: [],
     length: "",
     overview: "",
     genre: "",
     id: uuid.v4(),
   });
+  //handling the change of state values
   const handleChange = (key, text) => {
     setState((previous) => ({ ...previous, [key]: text }));
   };
+  //adding a movie
   const addMovie = (genre, newMovie) => {
+    setState({ ...state, cast: [...state.cast, state.actors] });
     setGallery({ ...gallery, [genre]: [...gallery[genre], newMovie] });
-
     navigation.navigate("Home");
+    // initial state
     setState({
       title: "",
       poster: "",
       backdrop: "",
       imdb_rating: null,
       released_on: "",
+      actors: "",
       cast: [],
       length: "",
       overview: "",
@@ -48,7 +50,7 @@ export default function AddMovie({ navigation }) {
       id: "",
     });
   };
-  console.log(gallery);
+
   return (
     <ScrollView style={{ padding: 40 }} vertical={true}>
       <View style={styles.container}>
@@ -80,10 +82,10 @@ export default function AddMovie({ navigation }) {
           onChangeText={(text) => handleChange("backdrop", text)}
         />
         <TextInput
-          value={state.cast}
+          value={state.actors}
           placeholder="Cast..."
           style={styles.searchbox}
-          onChangeText={(text) => setState({ ...state, cast: [text] })}
+          onChangeText={(text) => handleChange("actors", text)}
         />
         <TextInput
           value={state.imdb_rating}

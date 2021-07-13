@@ -6,7 +6,7 @@ import SearchModal from "./SearchModal";
 import AddMovie from "./AddMovie";
 import Favorite from "./Favorite";
 import { StyleSheet, Text, View, Image } from "react-native";
-
+// THE NAVIGATION COMPONENET
 const Tab = createBottomTabNavigator();
 
 const BottomTab = () => {
@@ -51,7 +51,34 @@ const BottomTab = () => {
           ),
         }}
       />
-      <Tab.Screen name="Details" component={Details} />
+      <Tab.Screen
+        name="Details"
+        component={Details}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                top: 10,
+              }}
+            >
+              <Image
+                source={require("../assets/enable.png")}
+                resizeMode="contain"
+                style={{
+                  width: 30,
+                  height: 30,
+                  tintColor: focused ? "#e32f45" : "#748c94",
+                }}
+              />
+              <Text style={{ color: focused ? "#e32f45" : "#748c94" }}>
+                Previous
+              </Text>
+            </View>
+          ),
+        }}
+      />
       <Tab.Screen
         name="Favorite"
         component={Favorite}

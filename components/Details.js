@@ -58,7 +58,6 @@ export default function Details({ route }) {
           );
         })}
       </View>
-
       <Text style={styles.title}>MOVIE DESCRIPTION</Text>
       <Text style={{ color: "white", bottom: -70, textAlign: "center" }}>
         {overview}

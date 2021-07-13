@@ -9,6 +9,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { Context } from "../Context";
+// Refreshing the home page when scroll down
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };

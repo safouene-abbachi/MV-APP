@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Context } from "../Context";
-import Details from "./Details";
 import {
   StyleSheet,
   Text,
@@ -9,7 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-export default function Favorite({ navigation }) {
+export default function Favorite() {
   const { favorite } = useContext(Context);
   console.log("DDD", Object.values(favorite));
 
@@ -66,5 +65,6 @@ const styles = StyleSheet.create({
     width: 120,
     height: 200,
     borderRadius: 20,
+    left: "30%",
   },
 });
